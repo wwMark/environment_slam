@@ -1,30 +1,17 @@
 FROM ubuntu:20.04
 
-RUN apt-get install cmake
-RUN apt-get install libgoogle-glog-dev libgflags-dev
-RUN apt-get install libatlas-base-dev
-RUN apt-get install libeigen3-dev
-RUN apt-get install libsuitesparse-dev
+RUN apt-get update
+RUN apt-get -y upgrade
 
-RUN cd ~
-RUN mkdir ceres
-RUN cd ceres
-RUN git clone https://ceres-solver.googlesource.com/ceres-solver
-RUN tar zxf ceres-solver-2.1.0.tar.gz
-RUN mkdir ceres-bin
-RUN cd ceres-bin
-RUN cmake ../ceres-solver-2.1.0
-RUN make -j8
-RUN make test
-RUN make install
-RUN bin/simple_bundle_adjuster ../ceres-solver-2.1.0/data/problem-16-22106-pre.txt
+RUN apt-get install -y cmake
+RUN apt-get install -y libgoogle-glog-dev libgflags-dev
+RUN apt-get install -y libatlas-base-dev
+RUN apt-get install -y libeigen3-dev
+RUN apt-get install -y libsuitesparse-dev
+RUN apt-get install -y git
+RUN apt-get install -y wget
+RUN apt-get install -y g++
 
-RUN cd ~
-RUN mkdir sophus
-RUN cd sophus
-RUN git clone http://github.com/strasdat/Sophus.git
-RUN mkdir build
-RUN cd build
-RUN cmake ..
-RUN make -j8
-RUN make install
+RUN cd ~ && mkdir ceres && cd ceres && wget http://ceres-solver.org/ceres-solver-2.1.0.tar.gz && tar zxf ceres-solver-2.1.0.tar.gz && mkdir ceres-bin && cd ceres-bin && cmake ../ceres-solver-2.1.0 && make -j8 && make test && make install
+
+RUN cd ~ && mkdir sophus && cd sophus && echo $PWD && git clone http://github.com/strasdat/Sophus.git && cd Sophus && echo $PWD && mkdir build && cd build && cmake .. && make -j8 && make install
